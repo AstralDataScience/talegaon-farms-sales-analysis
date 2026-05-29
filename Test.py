@@ -1,50 +1,70 @@
-import pandas as pd
-import glob
-files = glob.glob("C:\\Users\\ACC1\\Desktop\\Project\\Big_Project\\*.xlsx")
-df_list = []
-for file in files:
-    df =pd.read_excel(file)
-    df_list.append(df)
-    df = pd.concat(df_list,ignore_index=True)
-df = df.drop(columns = ['Mobile'])
-df.to_csv('talegaon_clean.csv',index=False)
-print(df.shape)
-print(df.dtypes)
-print(df.head())
+#import pandas as pd
+#import glob
+#files = glob.glob("C:\\Users\\ACC1\\Desktop\\Project\\Big_Project\\*.xlsx")
+#df_list = []
+#for file in files:
+    #df =pd.read_excel(file)
+    #df_list.append(df)
+    #df = pd.concat(df_list,ignore_index=True)
+#df = df.drop(columns = ['Mobile'])
+#df.to_csv('talegaon_clean.csv',index=False)
+#print(df.shape)
+#print(df.dtypes)
+#print(df.head())
 #check Missing values
-print('Missing Values')
-print(df.isnull().sum())
+#print('Missing Values')
+#print(df.isnull().sum())
 # Duplicate Values
-print("\nDuplicate rows:",df.duplicated().sum())
+#print("\nDuplicate rows:",df.duplicated().sum())
 # Date Range
-print("\n Date Range:")
-print("From:",df['Date'].min())
-print("To:",df['Date'].max())
+#print("\n Date Range:")
+#print("From:",df['Date'].min())
+#print("To:",df['Date'].max())
 #Unqiue Categories
-print("\n Unique Categoreis:",df['Category'].nunique())
-print('Categoreis:', df['Category'].unique())
+#print("\n Unique Categoreis:",df['Category'].nunique())
+#print('Categoreis:', df['Category'].unique())
 
-print("\n Unique product:",df['Product'].nunique())
+#print("\n Unique product:",df['Product'].nunique())
 
-print("\nOrder Total stats:")
-print(df['Order_Total'].describe())
+#print("\nOrder Total stats:")
+#print(df['Order_Total'].describe())
 
-print(df[df['Tower'].isnull()]['Building'].value_counts())
+#print(df[df['Tower'].isnull()]['Building'].value_counts())
 
-df = df.drop(columns=['Tower'])
-df = df.drop(columns=['Flat','Name'])
+#df = df.drop(columns=['Tower'])
+#df = df.drop(columns=['Flat','Name'])
 
-df = df[df['Category']!='Sample']
+#df = df[df['Category']!='Sample']
 
-df = df[df['Order_Total']>0]
+#df = df[df['Order_Total']>0]
 
-df = df.dropna(subset=['Order_Total'])
+#df = df.dropna(subset=['Order_Total'])
+#print(df.shape)
+#print(df.isnull().sum())
+
+#df = df.dropna(subset=['Building', 'Customer_ID'])
+#print(df.shape)
+#print(df.isnull().sum())
+
+#df.to_csv('talegaon_final_clean_csv',index=False)
+#print('Saved successfully')
+
+#EDA
+
+import pandas as pd
+df = pd.read_csv('talegaon_final_clean_csv')
 print(df.shape)
-print(df.isnull().sum())
 
-df = df.dropna(subset=['Building', 'Customer_ID'])
-print(df.shape)
-print(df.isnull().sum())
+import matplotlib.pyplot as plt
 
-df.to_csv('talegaon_final_clean_csv',index=False)
-print('Saved successfully')
+category_revenue = df.groupby('Category')['Order_Total'].sum().sort_values(ascending=False)
+print(category_revenue)
+
+#plot
+plt.figure(figsize=(10,6))
+plt.bar(category_revenue.index,category_revenue.values,color='steelblue')
+plt.title('Total Revenue by Category(2020-2026)')
+plt.xlabel('Category')
+plt.ylabel('Total Revenue(₹)')
+plt.tight_layout()
+plt.show()
