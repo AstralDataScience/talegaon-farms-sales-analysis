@@ -218,3 +218,6 @@ __marimo__/
 .streamlit/secrets.toml
 customer_name_reference.csv
 *.xlsx
+
+CB_Lost_Customers_CONFIDENTIAL.xlsx
+CB_temp.xlsx
